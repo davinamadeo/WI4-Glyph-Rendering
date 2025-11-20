@@ -1,7 +1,7 @@
-# 🚀 WI4 WebGL
+# WI4 WebGL
 
 **WI4 WebGL** adalah proyek WebGL sederhana yang menampilkan huruf **W**, **I**, dan angka **4** dalam bentuk **3D**, lengkap dengan animasi rotasi, warna dinamis, bouncing, dan outline.  
-Seluruh geometri dibuat manual menggunakan koordinat vertex tanpa library tambahan — murni WebGL.
+Seluruh geometri dibuat manual menggunakan koordinat vertex tanpa library tambahan, murni WebGL.
 
 ---
 
@@ -9,7 +9,7 @@ Seluruh geometri dibuat manual menggunakan koordinat vertex tanpa library tambah
 
 > Render 3D berputar dengan efek warna dan outline.
 
-*(Tambahkan screenshot/gif jika ada)*
+<img width="2556" height="1364" alt="image" src="https://github.com/user-attachments/assets/f9248d45-bc8a-42b4-8c77-f09af27f37b9" />
 
 ---
 
@@ -21,9 +21,10 @@ Seluruh geometri dibuat manual menggunakan koordinat vertex tanpa library tambah
 - **Rotasi & bouncing animation**  
 - **Klik Canvas** untuk pause/unpause  
 - Kontrol keyboard:
-  - **Space** → Freeze/Unfreeze
-  - **↑** → Tambah kecepatan rotasi
-  - **↓** → Kurangi kecepatan rotasi
+  - **Space** : Freeze/Unfreeze
+  - **↑** : Tambah kecepatan rotasi
+  - **↓** : Kurangi kecepatan rotasi
+  - **click** : Toggle Freeze 
 
 ---
 
