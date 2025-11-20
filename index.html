@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebGL WI4 Demo</title>
+
+    <!-- Simple modern styling -->
+    <style>
+        :root {
+            color-scheme: dark;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+                Roboto, sans-serif;
+            background: radial-gradient(circle at top, #141b33 0, #05060a 55%, #020308 100%);
+            color: #f4f5fb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 1100px;
+            padding: 24px;
+        }
+
+        header {
+            margin-bottom: 18px;
+        }
+
+        header h1 {
+            font-size: 1.9rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+        }
+
+        header p {
+            margin-top: 4px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(0, 3fr) minmax(240px, 1.4fr);
+            gap: 20px;
+        }
+
+        .canvas-wrapper {
+            background: radial-gradient(circle at top left, #20263d 0, #05060f 60%);
+            border-radius: 18px;
+            padding: 12px;
+            box-shadow: 0 22px 45px rgba(0, 0, 0, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .canvas-wrapper::after {
+            content: "WebGL";
+            position: absolute;
+            right: 18px;
+            bottom: 14px;
+            font-size: 0.72rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            opacity: 0.3;
+        }
+
+        #myCanvas {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+            background: #000;
+        }
+
+        .panel {
+            background: rgba(6, 10, 30, 0.9);
+            border-radius: 18px;
+            padding: 16px 18px;
+            box-shadow: 0 16px 35px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(112, 128, 255, 0.25);
+        }
+
+        .panel h2 {
+            font-size: 1.05rem;
+            margin-bottom: 6px;
+        }
+
+        .panel section + section {
+            margin-top: 14px;
+        }
+
+        .panel p {
+            font-size: 0.86rem;
+            line-height: 1.5;
+            opacity: 0.9;
+        }
+
+        .controls-list {
+            list-style: none;
+            margin-top: 6px;
+        }
+
+        .controls-list li {
+            font-size: 0.85rem;
+            padding: 4px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .key {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 7px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            font-size: 0.8rem;
+            min-width: 24px;
+            background: rgba(16, 22, 48, 0.9);
+        }
+
+        footer {
+            margin-top: 18px;
+            font-size: 0.75rem;
+            opacity: 0.65;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 800px) {
+            .layout {
+                grid-template-columns: minmax(0, 1fr);
+            }
+            .panel {
+                order: -1;
+            }
+        }
+    </style>
+
+    <!-- JS: urutan bisa seperti ini -->
+    <script type="text/javascript" src="data.js"></script>
+    <script type="text/javascript" src="helper.js"></script>
+    <script type="text/javascript" src="IOHandler.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <h1>WI4 WebGL Demo</h1>
+            <p>Rotating 3D letters &amp; numbers with animated colors and outlines.</p>
+        </header>
+
+        <main class="layout">
+            <div class="canvas-wrapper">
+                <canvas id="myCanvas" width="750" height="650"></canvas>
+            </div>
+
+            <aside class="panel">
+                <section>
+                    <h2>Controls</h2>
+                    <ul class="controls-list">
+                        <li><span class="key">Space</span> Pause / resume animation</li>
+                        <li><span class="key">▲</span> Increase rotation speed</li>
+                        <li><span class="key">▼</span> Decrease rotation speed</li>
+                        <li><span class="key">Click</span> Toggle freeze</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>About</h2>
+                    <p>
+                        This canvas renders custom 3D geometry for the characters
+                        <strong>W</strong>, <strong>I</strong>, and <strong>4</strong> using raw WebGL.
+                        Vertices, colors, and indices are defined manually in <code>data.js</code>, then
+                        animated and shaded in <code>main.js</code>.
+                    </p>
+                </section>
+            </aside>
+        </main>
+
+        <footer>
+            <span>Tugas Grafika Komputer -- Davin Amadeo Wijaya -- 5025231204</span>
+        </footer>
+    </div>
+
+    <!-- Vertex shader source -->
+    <script id="vertexShaderCode" type="notjs">
+        attribute vec3 aPosition;
+        attribute vec3 aColor;
+        varying vec3 vColor;
+        uniform mat4 uFormMatrix;
+
+        void main() {
+            vColor = aColor;
+            gl_Position = uFormMatrix * vec4(aPosition, 1.0);
+        }
+    </script>
+
+    <!-- Panggil main() setelah semua dimuat -->
+    <script>
+        window.addEventListener('load', main);
+    </script>
+</body>
+</html>
